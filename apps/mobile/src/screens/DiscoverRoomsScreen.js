@@ -9,7 +9,6 @@ import {
 import { colors, spacing } from '../theme';
 import Screen from '../components/Screen';
 import AppText from '../components/AppText';
-import Button from '../components/Button';
 import EmptyState from '../components/EmptyState';
 import Input from '../components/Input';
 import RoomCard from '../components/RoomCard';

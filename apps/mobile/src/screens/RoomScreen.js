@@ -107,7 +107,6 @@ export default function RoomScreen({ navigation, route }) {
   const { showToast } = useToast();
 
   const routeCode = String(route.params?.roomCode || '').toUpperCase();
-  const currentCode = room?.roomId || routeCode;
   const [localError, setLocalError] = useState('');
   const [positionMs, setPositionMs] = useState(0);
   const [durationMs, setDurationMs] = useState(0);

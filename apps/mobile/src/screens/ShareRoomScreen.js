@@ -1,6 +1,6 @@
 import React from 'react';
 import { Linking, Share, StyleSheet, View } from 'react-native';
-import { colors, radius, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 import Screen from '../components/Screen';
 import AppText from '../components/AppText';
 import Badge from '../components/Badge';

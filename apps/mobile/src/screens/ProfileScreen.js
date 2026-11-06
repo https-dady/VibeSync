@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, Share, StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { colors, radius, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 import Screen from '../components/Screen';
 import AppText from '../components/AppText';
 import Avatar from '../components/Avatar';
 import Badge from '../components/Badge';
 import Button from '../components/Button';
 import Card from '../components/Card';
-import Header from '../components/Header';
 import Icon from '../components/Icon';
 import Input from '../components/Input';
 import ListRow from '../components/ListRow';

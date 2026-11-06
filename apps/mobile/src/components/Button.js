@@ -4,7 +4,6 @@ import {
   Animated,
   Pressable,
   StyleSheet,
-  View,
 } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { colors, radius, shadows, spacing } from '../theme';

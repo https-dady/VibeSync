@@ -72,12 +72,13 @@ function VibeTabBar({ state, navigation }) {
   );
 }
 
+function renderTabBar(props) {
+  return <VibeTabBar {...props} />;
+}
+
 export default function MainTabs() {
   return (
-    <Tab.Navigator
-      screenOptions={{ headerShown: false, lazy: true }}
-      tabBar={(props) => <VibeTabBar {...props} />}
-    >
+    <Tab.Navigator screenOptions={{ headerShown: false, lazy: true }} tabBar={renderTabBar}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Rooms" component={DiscoverRoomsScreen} />
       <Tab.Screen name="Nearby" component={NearbyScreen} />

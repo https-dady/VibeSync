@@ -1,6 +1,6 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { colors, radius } from '../theme';
+import { StyleSheet, View } from 'react-native';
+import { colors } from '../theme';
 import AppText from './AppText';
 
 const palette = {

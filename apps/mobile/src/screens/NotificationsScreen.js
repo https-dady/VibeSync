@@ -12,7 +12,6 @@ import { colors, radius, spacing } from '../theme';
 import Screen from '../components/Screen';
 import AppText from '../components/AppText';
 import Badge from '../components/Badge';
-import Button from '../components/Button';
 import EmptyState from '../components/EmptyState';
 import Header from '../components/Header';
 import Icon from '../components/Icon';

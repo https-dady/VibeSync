@@ -418,8 +418,10 @@ export function RoomProvider({ children }) {
     if (activeSocket?.connected) {
       try {
         return await emitAck(event, payload);
-      } catch (error) {
-        if (error.code !== 'NOT_CONNECTED' && error.code !== 'REALTIME_TIMEOUT') throw error;
+      } catch (socketError) {
+        if (socketError.code !== 'NOT_CONNECTED' && socketError.code !== 'REALTIME_TIMEOUT') {
+          throw socketError;
+        }
       }
     }
     if (restFallback) return restFallback();
