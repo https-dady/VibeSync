@@ -64,7 +64,7 @@ Rate limits (production): auth 30 requests/15 min per IP, general API 240/min pe
 | GET | `/api/auth/me` | Current user. |
 | PATCH | `/api/auth/me` | `{name?,bio?,avatarColor?,settings?}`. |
 | POST | `/api/auth/change-password` | `{currentPassword,newPassword}`; revokes all sessions. |
-| GET | `/api/auth/sessions` | Current user summary (session-list endpoint placeholder shape). |
+| GET | `/api/auth/sessions` | Active refresh-token sessions for the current user, newest first: id, timestamps, IP, user agent. |
 
 ### Rooms
 

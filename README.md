@@ -15,7 +15,7 @@ The entire project lives in this repository. It has its own frontend, backend, d
 - **Host controls:** approval queues, participant permissions, mute-all, microphone requests, private host inbox, chat moderation, and room settings.
 - **Voice:** WebRTC audio mesh for approved speakers, ephemeral coturn credentials, optional LiveKit token endpoint, and speaker-level mute enforcement.
 - **Chat:** room chat, private host-to-participant messages, moderation, rate limits, and realtime delivery.
-- **Nearby mode:** BLE discovery and a local HTTP server for offline media, chat, members, and playback state. No internet or account session is required to join a nearby room.
+- **Nearby mode:** BLE discovery and a local HTTP server for offline media, chat, members, and playback state. The local session never contacts the API; the app currently requires an existing signed-in session to open the Nearby tab, so first-time use needs one online sign-in.
 - **21 screens:** all screens are connected through React Navigation; see the [screen map](docs/SCREENS.md).
 - **Visual system:** black `#000000`, orange `#FD8549`, yellow `#FFC123`, off-white `#F1F3F5`, shared typography, spacing, and accessible components.
 

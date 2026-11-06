@@ -74,6 +74,6 @@ Deep links (`vibesync://room/CODE`, `https://vibesync.app/r/CODE`) open `JoinRoo
 
 - **RoomScreen** is deliberately comprehensive: it switches between waiting, audio, and video layouts without leaving the room, and shows host quick actions instead of forcing a separate dashboard. Host-only destinations still exist as dedicated screens for larger management tasks.
 - **Chat preview** on RoomScreen shows recent messages and routes to `RoomChatScreen`. Private host messages live in `HostChatScreen` and are never broadcast to the room channel.
-- **NearbyScreen** is fully local. It does not show or require the online room UI, and its members/chat/playback come from the native local session.
+- **NearbyScreen** is fully local. It does not show or use the online room UI, and its members/chat/playback come from the native local session. It is still registered inside the authenticated app shell, so one online sign-in is required before it can be opened.
 - **ShareRoomScreen** builds the public invite URL from `VIBESYNC_WEB_URL`; the API serves the branded landing page at `/r/:roomId`.
 - **SettingsScreen** can point the app at a self-hosted API at runtime. Restart the app after changing the server so the socket reconnects to the new origin.

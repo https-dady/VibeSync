@@ -1,6 +1,6 @@
 # Nearby offline transport
 
-Nearby mode lets one device host an offline room and other devices on the same local network join it. It does not use the VibeSync API, MongoDB, JWT accounts, or the internet.
+Nearby mode lets one device host an offline room and other devices on the same local network join it. The local session does not use the VibeSync API, MongoDB, or JWT account tokens, and it works without internet once the app has been signed in. The current app shell is auth-gated: a user must sign in online once before the Nearby tab is available.
 
 ## How it works
 
@@ -21,6 +21,7 @@ advertise BLE payload                  │
 
 - The host's app owns the media file; guests never upload or download a copy to disk.
 - Playback is still host-authoritative. The host updates local playback state; guests poll it and correct their player.
+- Once the app has a stored signed-in session, nearby hosting/joining, chat, and playback work without internet. Signing out removes access to the Nearby tab; there is no guest/anonymous app mode.
 - Room discovery is best-effort BLE. If Bluetooth is unavailable, guests can type the host's LAN address (`192.168.x.x:port`) shown on the host screen.
 - The local session uses a canonical 4-character code because the BLE advertisement payload reserves four bytes for it.
 

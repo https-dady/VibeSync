@@ -56,6 +56,14 @@ describe('VibeSync API', () => {
       .send({ email: 'HOST@vibesync.test', password: 'Password123' })
       .expect(200);
     expect(login.body.user.name).toBe('Host User');
+
+    const sessions = await request(server.app)
+      .get('/api/auth/sessions')
+      .set(authed(host.accessToken))
+      .expect(200);
+    expect(sessions.body.count).toBeGreaterThanOrEqual(2);
+    expect(sessions.body.data[0]).toHaveProperty('expiresAt');
+    expect(JSON.stringify(sessions.body)).not.toContain(host.refreshToken);
   });
 
   test('rotates refresh tokens and detects token reuse', async () => {

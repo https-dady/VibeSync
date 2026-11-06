@@ -8,6 +8,7 @@ const { authenticate } = require('../middleware/authenticate');
 const { authLimiter, writeLimiter } = require('../middleware/rateLimits');
 const User = require('../models/User');
 const Device = require('../models/Device');
+const RefreshSession = require('../models/RefreshSession');
 const ApiError = require('../utils/ApiError');
 const { hashPassword, verifyPassword } = require('../services/password.service');
 const {
@@ -16,8 +17,6 @@ const {
   revokeRefreshToken,
   revokeAllSessions,
 } = require('../services/token.service');
-const { publicUser } = require('../utils/serializers');
-
 const router = express.Router();
 
 const passwordSchema = z
@@ -214,7 +213,28 @@ router.get(
   '/sessions',
   authenticate,
   asyncHandler(async (req, res) => {
-    res.json({ user: publicUser(req.user) });
+    // Refresh tokens rotate on every use, so only the latest token in each
+    // family is unrevoked. Listing unrevoked, unexpired rows therefore returns
+    // one entry per active signed-in device/session.
+    const sessions = await RefreshSession.find({
+      user: req.user._id,
+      revokedAt: null,
+      expiresAt: { $gt: new Date() },
+    })
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .lean();
+    res.json({
+      data: sessions.map((session) => ({
+        id: String(session._id),
+        createdAt: session.createdAt,
+        lastUsedAt: session.updatedAt,
+        expiresAt: session.expiresAt,
+        ip: session.ip || '',
+        userAgent: session.userAgent || '',
+      })),
+      count: sessions.length,
+    });
   }),
 );
 

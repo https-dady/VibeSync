@@ -17,6 +17,7 @@ This document lists what has not been verified, what is intentionally out of sco
 - **Android hotspot creation is manual.** The app can use an existing hotspot interface but does not enable the hotspot through system UI.
 - **iOS BLE peripheral advertising is constrained.** It may stop when the app is backgrounded or the screen locks. The host screen should remain open. iOS cannot advertise arbitrary service data, so discovery falls back to a GATT read.
 - **Android BLE advertising/scanning is subject to OS background limits and vendor battery policies.** Doze, background restrictions, and some OEM skins can stop discovery.
+- **Nearby is reachable only inside the signed-in app.** The local session itself uses no account or backend, but the navigation requires an authenticated session to open the Nearby tab. A brand-new user must complete one online sign-in before hosting or joining an offline room.
 - **Nearby rooms are ephemeral.** There is no database, account session, cloud backup, or resume after the host stops the server. The host's local file is deleted when the session is cleaned up.
 - **Nearby lacks online-only features.** There is no microphone/voice room, private host DM, join approval queue, participant ban, media queue, or host dashboard in nearby mode. It supports local media, synchronized playback, room chat, a member list, and leave.
 - **Plain HTTP on the LAN.** Session/media requests use an `X-VibeSync-Token`, but traffic is not TLS-protected. Do not treat nearby mode as safe on hostile public Wi-Fi.
@@ -53,7 +54,7 @@ This document lists what has not been verified, what is intentionally out of sco
 - **No content moderation service or admin console.** Hosts can moderate their own rooms; there is no platform-wide moderation/reporting workflow.
 - **Rate limiting is in-process unless Redis is configured.** Multiple API instances without Redis will not share limits or presence correctly.
 - **Secure storage depends on the OS keychain/keystore.** Tokens are not stored in AsyncStorage, but rooted/jailbroken devices and compromised OS credentials remain outside the app's control.
-- **The `GET /api/auth/sessions` endpoint returns only the current user summary.** It is not a full session-management list.
+- **Session management is read-only in the app.** `GET /api/auth/sessions` lists active refresh sessions, but there is no per-session revoke UI or endpoint; users can revoke all sessions with logout-all or a password change.
 
 ## Deployment and clients
 
