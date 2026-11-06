@@ -75,21 +75,7 @@ npm run install:all
 
 The mobile install uses `--legacy-peer-deps` because the React Native 0.81 template and its native libraries do not all publish matching peer ranges.
 
-### 2. Configure and start MongoDB
-
-Either run MongoDB locally:
-
-```bash
-mongod --dbpath ./data/mongo
-```
-
-or start the provided containers:
-
-```bash
-docker compose up -d mongo redis
-```
-
-### 3. Configure the API
+### 2. Configure the API
 
 ```bash
 cp services/api/.env.example services/api/.env
@@ -97,6 +83,22 @@ cp services/api/.env.example services/api/.env
 ```
 
 Set `JWT_ACCESS_SECRET` and `JWT_REFRESH_SECRET` to long random values. `NODE_ENV=production` refuses to start with the example secrets.
+
+### 3. Start MongoDB and the API
+
+Either run MongoDB locally:
+
+```bash
+mongod --dbpath ./data/mongo
+```
+
+or start the provided containers (create `services/api/.env` first; Compose validates the whole file even when starting only these services):
+
+```bash
+docker compose up -d mongo redis
+```
+
+Then start the API:
 
 ```bash
 npm run api

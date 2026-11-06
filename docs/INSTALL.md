@@ -77,7 +77,7 @@ Or Docker:
 docker compose up -d mongo redis
 ```
 
-The Compose API service is not started by that command, so an API `.env` file is not required yet.
+The Compose API service is not started by that command, but the `.env` created above is still required because Compose validates the full file.
 
 ## 5. Start the API
 
