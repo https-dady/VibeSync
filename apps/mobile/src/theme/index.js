@@ -3,10 +3,12 @@ export const colors = {
   orange: '#FD8549',
   yellow: '#FFC123',
   offWhite: '#F1F3F5',
-  surface: '#0A0A0A',
-  card: '#121212',
-  raised: '#191919',
-  input: '#101010',
+  // Surfaces are translucent off-white over black, keeping the palette to the
+  // four brand colors while preserving depth.
+  surface: 'rgba(241, 243, 245, 0.03)',
+  card: 'rgba(241, 243, 245, 0.05)',
+  raised: 'rgba(241, 243, 245, 0.08)',
+  input: 'rgba(241, 243, 245, 0.04)',
   border: 'rgba(241, 243, 245, 0.10)',
   borderStrong: 'rgba(241, 243, 245, 0.20)',
   textMuted: 'rgba(241, 243, 245, 0.58)',
@@ -15,12 +17,6 @@ export const colors = {
   orangeSoft: 'rgba(253, 133, 73, 0.14)',
   yellowSoft: 'rgba(255, 193, 35, 0.12)',
   offWhiteSoft: 'rgba(241, 243, 245, 0.07)',
-};
-
-export const gradients = {
-  primary: [colors.orange, colors.yellow],
-  warm: ['rgba(253,133,73,0.24)', 'rgba(255,193,35,0.06)'],
-  dark: ['#141414', '#050505'],
 };
 
 export const spacing = {
@@ -57,14 +53,14 @@ export const typography = {
 
 export const shadows = {
   floating: {
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: { width: 0, height: 18 },
     shadowOpacity: 0.5,
     shadowRadius: 30,
     elevation: 14,
   },
   soft: {
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.35,
     shadowRadius: 16,

@@ -1611,7 +1611,7 @@ const styles = StyleSheet.create({
     height: 210,
     borderRadius: radius.lg,
     overflow: 'hidden',
-    backgroundColor: '#050505',
+    backgroundColor: colors.black,
     borderWidth: 1,
     borderColor: colors.border,
   },

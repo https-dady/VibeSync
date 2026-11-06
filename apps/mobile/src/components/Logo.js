@@ -15,7 +15,7 @@ export default function Logo({ size = 56, wordmark = false, subtitle, style }) {
           </LinearGradient>
         </Defs>
         <Rect width="64" height="64" rx="20" fill="url(#logoGradient)" />
-        <Circle cx="32" cy="32" r="19" fill="#000" opacity="0.12" />
+        <Circle cx="32" cy="32" r="19" fill={colors.black} opacity="0.12" />
         <Rect x="19" y="27" width="4" height="10" rx="2" fill={colors.black} />
         <Rect x="27" y="20" width="4" height="24" rx="2" fill={colors.black} />
         <Rect x="35" y="24" width="4" height="16" rx="2" fill={colors.black} />

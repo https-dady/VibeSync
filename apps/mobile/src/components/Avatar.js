@@ -53,7 +53,7 @@ export function AvatarStack({ users = [], size = 30, max = 4 }) {
           name={user.name}
           color={user.avatarColor}
           size={size}
-          style={{ marginLeft: index === 0 ? 0 : -size * 0.3, borderWidth: 2, borderColor: colors.card }}
+          style={{ marginLeft: index === 0 ? 0 : -size * 0.3, borderWidth: 2, borderColor: colors.black }}
         />
       ))}
       {users.length > max ? (
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   more: {
     backgroundColor: colors.raised,
     borderWidth: 2,
-    borderColor: colors.card,
+    borderColor: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
   },
