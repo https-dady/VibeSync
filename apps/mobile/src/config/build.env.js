@@ -2,7 +2,7 @@
 // Source: apps/mobile/.env (see .env.example).
 export default {
   "apiUrl": "https://api.vibesync.app",
-  "devHost": "",
+  "devHost": "10.84.244.42",
   "webUrl": "https://vibesync.app",
   "appScheme": "vibesync"
 };

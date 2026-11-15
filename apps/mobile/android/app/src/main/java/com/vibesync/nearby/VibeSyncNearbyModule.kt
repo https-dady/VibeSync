@@ -239,9 +239,19 @@ class VibeSyncNearbyModule(private val reactContext: ReactApplicationContext) :
     }
     try {
       val message = active.sendHostMessage(body)
-      val result = sessionEnvelope(active)
-      result.putMap("message", jsonToMap(message))
-      promise.resolve(result)
+val result = sessionEnvelope(active)
+
+val messageMap = Arguments.createMap().apply {
+    putString("id", message.id)
+    putString("senderId", message.senderId)
+    putString("senderName", message.senderName)
+    putString("body", message.body)
+    putDouble("createdAt", message.createdAt.toDouble())
+}
+
+result.putMap("message", messageMap)
+
+promise.resolve(result)
     } catch (error: Exception) {
       promise.reject("E_NEARBY_CHAT", error.message ?: "Message could not be sent", error)
     }
@@ -314,7 +324,7 @@ class VibeSyncNearbyModule(private val reactContext: ReactApplicationContext) :
       callback(false)
       return
     }
-    val activity = currentActivity
+    val activity = reactContext.currentActivity
     if (activity == null) {
       callback(false)
       return

@@ -3,6 +3,8 @@ import { Linking, StyleSheet, View } from 'react-native';
 import {
   NavigationContainer,
   createNavigationContainerRef,
+  DarkTheme,
+  fonts,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { colors } from '../theme';
@@ -144,16 +146,19 @@ export default function RootNavigator() {
       onReady={() => setNavigationReady(true)}
       fallback={<SplashScreen />}
       theme={{
-        dark: true,
-        colors: {
-          primary: colors.orange,
-          background: colors.black,
-          card: colors.card,
-          text: colors.offWhite,
-          border: colors.border,
-          notification: colors.orange,
-        },
-      }}
+  ...DarkTheme,
+  dark: true,
+  fonts,
+  colors: {
+    ...DarkTheme.colors,
+    primary: colors.orange,
+    background: colors.black,
+    card: colors.card,
+    text: colors.offWhite,
+    border: colors.border,
+    notification: colors.orange,
+  },
+}}
     >
       <Stack.Navigator initialRouteName={initialRouteName} screenOptions={baseScreenOptions}>
         {!isAuthenticated ? (
