@@ -1,3 +1,5 @@
+import { DefaultTheme } from '@react-navigation/native';
+
 export const colors = {
   black: '#000000',
   orange: '#FD8549',
@@ -72,4 +74,27 @@ export const layout = {
   screenPadding: 20,
   tabBarHeight: 74,
   headerHeight: 56,
+};
+
+// Yahan se missing fonts add kiye gaye hain
+export const fonts = {
+  regular: { fontFamily: 'System', fontWeight: '400' },
+  medium: { fontFamily: 'System', fontWeight: '500' },
+  bold: { fontFamily: 'System', fontWeight: '700' },
+  heavy: { fontFamily: 'System', fontWeight: '900' },
+};
+
+// React Navigation ke liye default theme setup
+export const navigationTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: colors.orange,
+    background: colors.black,
+    card: colors.black,
+    text: colors.offWhite,
+    border: colors.borderStrong,
+    notification: colors.yellow,
+  },
+  fonts: fonts,
 };
