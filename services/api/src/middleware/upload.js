@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const multer = require('multer');
+
 const config = require('../config/env');
 const ApiError = require('../utils/ApiError');
 
@@ -28,8 +29,16 @@ const VIDEO_TYPES = new Set([
   'video/mpeg',
 ]);
 
+function getMediaStorageDirectory() {
+  return path.resolve(config.MEDIA_STORAGE_DIR);
+}
+
 function ensureUploadDir() {
-  fs.mkdirSync(config.MEDIA_STORAGE_DIR, { recursive: true });
+  const directory = getMediaStorageDirectory();
+
+  fs.mkdirSync(directory, { recursive: true });
+
+  return directory;
 }
 
 function extensionFor(mimetype, originalname) {
@@ -43,6 +52,7 @@ function extensionFor(mimetype, originalname) {
     'audio/webm': '.weba',
     'audio/flac': '.flac',
     'audio/x-flac': '.flac',
+
     'video/mp4': '.mp4',
     'video/quicktime': '.mov',
     'video/webm': '.webm',
@@ -50,27 +60,52 @@ function extensionFor(mimetype, originalname) {
     'video/ogg': '.ogv',
     'video/mpeg': '.mpeg',
   };
-  return known[mimetype] || path.extname(originalname || '').toLowerCase().slice(0, 8) || '.bin';
+
+  return (
+    known[mimetype] ||
+    path.extname(originalname || '').toLowerCase().slice(0, 8) ||
+    '.bin'
+  );
 }
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    ensureUploadDir();
-    cb(null, config.MEDIA_STORAGE_DIR);
+    try {
+      cb(null, ensureUploadDir());
+    } catch (error) {
+      cb(error);
+    }
   },
+
   filename: (req, file, cb) => {
-    const key = `${Date.now()}-${crypto.randomUUID()}${extensionFor(file.mimetype, file.originalname)}`;
+    const key = `${Date.now()}-${crypto.randomUUID()}${extensionFor(
+      file.mimetype,
+      file.originalname,
+    )}`;
+
     cb(null, key);
   },
 });
 
 const mediaUpload = multer({
   storage,
-  limits: { fileSize: config.uploadMaxBytes, files: 1, fields: 20 },
+
+  limits: {
+    fileSize: config.uploadMaxBytes,
+    files: 1,
+    fields: 20,
+  },
+
   fileFilter: (req, file, cb) => {
     if (!AUDIO_TYPES.has(file.mimetype) && !VIDEO_TYPES.has(file.mimetype)) {
-      return cb(ApiError.badRequest('Only supported audio and video files may be uploaded', 'UNSUPPORTED_MEDIA'));
+      return cb(
+        ApiError.badRequest(
+          'Only supported audio and video files may be uploaded',
+          'UNSUPPORTED_MEDIA',
+        ),
+      );
     }
+
     return cb(null, true);
   },
 });
@@ -78,7 +113,14 @@ const mediaUpload = multer({
 function mediaKind(mimetype) {
   if (AUDIO_TYPES.has(mimetype)) return 'audio';
   if (VIDEO_TYPES.has(mimetype)) return 'video';
+
   return null;
 }
 
-module.exports = { mediaUpload, mediaKind, ensureUploadDir, AUDIO_TYPES, VIDEO_TYPES };
+module.exports = {
+  mediaUpload,
+  mediaKind,
+  ensureUploadDir,
+  AUDIO_TYPES,
+  VIDEO_TYPES,
+};
