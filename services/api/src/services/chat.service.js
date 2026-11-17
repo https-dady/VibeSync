@@ -1,5 +1,6 @@
 'use strict';
 
+const { trusted } = require('mongoose');
 const Message = require('../models/Message');
 const ApiError = require('../utils/ApiError');
 const bus = require('../realtime/bus');
@@ -113,7 +114,7 @@ async function listMessages(room, userId, { channel = 'room', before, limit = 40
   }
   if (before) {
     const date = new Date(before);
-    if (!Number.isNaN(date.getTime())) query.createdAt = { $lt: date };
+    if (!Number.isNaN(date.getTime())) query.createdAt = trusted({ $lt: date });
   }
   const messages = await Message.find(query)
     .sort({ createdAt: -1 })

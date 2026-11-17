@@ -1,5 +1,6 @@
 'use strict';
 
+const { trusted } = require('mongoose');
 const express = require('express');
 const { z } = require('zod');
 const asyncHandler = require('../utils/asyncHandler');
@@ -219,7 +220,7 @@ router.get(
     const sessions = await RefreshSession.find({
       user: req.user._id,
       revokedAt: null,
-      expiresAt: { $gt: new Date() },
+      expiresAt: trusted({ $gt: new Date() }),
     })
       .sort({ createdAt: -1 })
       .limit(50)

@@ -294,7 +294,7 @@ export default function NearbyScreen({ navigation, route }) {
       ) {
         const drift = Math.abs(guestPositionRef.current - expected);
         if (drift > 1000) {
-          playerRef.current?.seekTo(expected / 1000);
+          playerRef.current?.seek(expected / 1000);
           lastCorrectionRef.current = Date.now();
         }
       }
@@ -456,7 +456,7 @@ export default function NearbyScreen({ navigation, route }) {
     if (role !== 'host') return;
     if (playerPaused) {
       const restart = session?.playback?.status === 'ended';
-      if (restart) playerRef.current?.seekTo(0);
+      if (restart) playerRef.current?.seek(0);
       sendPlayback('playing', restart ? 0 : positionMs);
     } else {
       sendPlayback('paused', positionMs);
@@ -465,7 +465,7 @@ export default function NearbyScreen({ navigation, route }) {
 
   const seekTo = (value) => {
     if (role !== 'host') return;
-    playerRef.current?.seekTo(value / 1000);
+    playerRef.current?.seek(value / 1000);
     setPositionMs(value);
     sendPlayback(playerPaused ? 'paused' : 'playing', value);
   };
@@ -591,7 +591,7 @@ export default function NearbyScreen({ navigation, route }) {
       Date.now(),
       clockOffset,
     );
-    if (expected > 250) playerRef.current?.seekTo(expected / 1000);
+    if (expected > 250) playerRef.current?.seek(expected / 1000);
     setPositionMs(expected);
   };
   const videoSource = useMemo(() => {

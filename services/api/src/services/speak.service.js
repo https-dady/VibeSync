@@ -1,5 +1,6 @@
 'use strict';
 
+const { trusted } = require('mongoose');
 const SpeakRequest = require('../models/SpeakRequest');
 const RoomMember = require('../models/RoomMember');
 const ApiError = require('../utils/ApiError');
@@ -87,7 +88,7 @@ async function revokeMic(room, hostId, targetUserId) {
     mutedByHost: true,
   });
   await SpeakRequest.updateMany(
-    { room: room._id, user: targetUserId, status: { $in: ['pending', 'approved'] } },
+    { room: room._id, user: targetUserId, status: trusted({ $in: ['pending', 'approved'] }) },
     { $set: { status: 'revoked', reviewedBy: hostId, reviewedAt: new Date() } },
   );
   await createNotification(targetUserId, {

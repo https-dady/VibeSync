@@ -1,5 +1,6 @@
 'use strict';
 
+const { trusted } = require('mongoose');
 const jwt = require('jsonwebtoken');
 const crypto = require('node:crypto');
 const config = require('../config/env');
@@ -142,7 +143,7 @@ async function revokeAllSessions(userId) {
 
 async function pruneSessions(userId, keepHash) {
   const keep = keepHash || crypto.randomBytes(1).toString('hex');
-  await RefreshSession.deleteMany({ user: userId, tokenHash: { $ne: keep } });
+  await RefreshSession.deleteMany({ user: userId, tokenHash: trusted({ $ne: keep }) });
 }
 
 module.exports = {

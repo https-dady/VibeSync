@@ -78,17 +78,14 @@ export function normalizeNearbyAddress(value) {
   let input = String(value || '').trim();
   if (!input) throw new Error('Enter the host address');
   if (!/^https?:\/\//i.test(input)) input = `http://${input}`;
-  let parsed;
-  try {
-    parsed = new URL(input);
-  } catch {
-    throw new Error('Enter an address like 192.168.1.20:8787');
-  }
-  if (!['http:', 'https:'].includes(parsed.protocol)) {
-    throw new Error('Nearby addresses must use HTTP');
-  }
-  if (!parsed.port) throw new Error('Include the host port, for example 192.168.1.20:8787');
-  return parsed.origin;
+  // React Native's URL polyfill does not reliably expose .port/.origin, so the
+  // address is parsed explicitly instead.
+  const match = input.match(/^(https?):\/\/([^/\s:?#]+|\[[^\]]+\])(?::(\d{1,5}))?(?:[/?#].*)?$/i);
+  if (!match) throw new Error('Enter an address like 192.168.1.20:8787');
+  const [, protocol, host, port] = match;
+  if (!port) throw new Error('Include the host port, for example 192.168.1.20:8787');
+  if (Number(port) < 1 || Number(port) > 65535) throw new Error('The host port must be between 1 and 65535');
+  return `${protocol.toLowerCase()}://${host}:${port}`;
 }
 
 export function nearbyMediaUrl(baseUrl, session) {

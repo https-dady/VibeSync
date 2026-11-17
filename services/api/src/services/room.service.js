@@ -1,5 +1,6 @@
 'use strict';
 
+const { trusted } = require('mongoose');
 const Room = require('../models/Room');
 const RoomMember = require('../models/RoomMember');
 const MediaAsset = require('../models/MediaAsset');
@@ -30,7 +31,7 @@ async function findRoomOrThrow(roomId) {
 
 async function getMembership(room, userId, { includeInactive = false } = {}) {
   const query = { room: room._id, user: userId };
-  if (!includeInactive) query.status = { $in: ['active', 'pending'] };
+  if (!includeInactive) query.status = trusted({ $in: ['active', 'pending'] });
   return RoomMember.findOne(query);
 }
 
@@ -54,7 +55,7 @@ async function reserveSeat(roomId) {
     {
       _id: roomId,
       status: 'active',
-      $expr: { $lt: ['$memberCount', '$maxParticipants'] },
+      $expr: trusted({ $lt: ['$memberCount', '$maxParticipants'] }),
     },
     { $inc: { memberCount: 1 }, $set: { lastActivityAt: new Date() } },
     { new: true },
@@ -63,7 +64,7 @@ async function reserveSeat(roomId) {
 
 async function releaseSeat(roomId) {
   await Room.updateOne(
-    { _id: roomId, memberCount: { $gt: 0 } },
+    { _id: roomId, memberCount: trusted({ $gt: 0 }) },
     { $inc: { memberCount: -1 }, $set: { lastActivityAt: new Date() } },
   );
 }
@@ -129,9 +130,9 @@ async function listPublicRooms(query) {
   if (query.mediaType) filter.mediaType = query.mediaType;
   if (query.search) {
     filter.$or = [
-      { name: { $regex: escapeRegex(query.search), $options: 'i' } },
-      { description: { $regex: escapeRegex(query.search), $options: 'i' } },
-      { roomId: { $regex: escapeRegex(query.search.toUpperCase()), $options: 'i' } },
+      { name: trusted({ $regex: escapeRegex(query.search), $options: 'i' }) },
+      { description: trusted({ $regex: escapeRegex(query.search), $options: 'i' }) },
+      { roomId: trusted({ $regex: escapeRegex(query.search.toUpperCase()), $options: 'i' }) },
     ];
   }
   const limit = Math.min(Number(query.limit) || 20, 50);
@@ -408,7 +409,7 @@ async function endRoom(room, hostId) {
   room.playback.sequence += 1;
   await room.save();
   await RoomMember.updateMany(
-    { room: room._id, status: { $in: ['active', 'pending'] } },
+    { room: room._id, status: trusted({ $in: ['active', 'pending'] }) },
     { $set: { status: 'left', 'permissions.canSpeak': false, 'permissions.micApproved': false } },
   );
   room.memberCount = 1;
